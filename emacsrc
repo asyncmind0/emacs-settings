@@ -1,0 +1,18 @@
+(viper-mode)
+(autoload 'python-mode "python-mode.el" "Python mode." t)
+(setq auto-mode-alist (append '(("/*.\.py$" . python-mode)) auto-mode-alist))
+
+(require 'color-theme)
+    (color-theme-initialize)
+    (color-theme-clarity)
+
+(global-set-key (kbd "<f3>") 'buffer-menu)
+(global-set-key (kbd "<f4>") 'dired)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+
+(require 'dired-x)
+(setq dired-omit-files "^\\...+$")
+(add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
