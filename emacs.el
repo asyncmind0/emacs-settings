@@ -105,10 +105,8 @@
            (getenv "USER")))
 
 ;; Color Themes ================================================================================ 
-;;(require 'color-theme)
-;;(load-file "~/.emacs.d/autoload/tango-theme.el")
-;;(color-theme-initialize)
-;;(color-theme-tango)
+(load-file "~/.emacs.d/tango-2-steven-theme.el")
+(load-theme "tango-2-steven")
 
 ;; Python Mode ================================================================================ 
 ;;(autoload 'python-mode "python-mode.el" "Python mode." t)
@@ -152,4 +150,9 @@
   (interactive)
   (save-some-buffers)
   (kill-emacs))
+ 
+;; python ropemacs and pyemacs
+;;https://github.com/mzc/ropemacs
+(require 'pymacs)
+(pymacs-load "ropemacs" "rope-")
 
