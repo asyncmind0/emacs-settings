@@ -5,7 +5,7 @@
  'tango-2-steven
  '(cursor ((t (:foreground "#888888"))))
  '(region ((t (:background "#555753"))))
- '(highlight ((t (:background "#444444"))))
+ '(highlight ((t (:background "#222222"))))
  '(mode-line ((t (:background "#2e3436" :foreground "#eeeeec"))))
  '(mode-line-inactive ((t (:background "#111111" :foreground "#cccddd"))))
  '(fringe ((t (:background "#111111"))))

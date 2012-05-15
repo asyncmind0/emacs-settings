@@ -9,7 +9,7 @@
 
 ;; Add in your own as you wish:
 (defvar my-packages '(starter-kit starter-kit-lisp starter-kit-bindings
-                                  evil dired+ full-ack tango-2-theme)
+                                  evil dired+ full-ack tango-2-theme xclip)
     "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
