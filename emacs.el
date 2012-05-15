@@ -60,6 +60,7 @@
 
 (global-set-key (kbd "M-o s") 'dired)
 (global-set-key (kbd "M-o r") 'buffer-menu)
+(global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 (define-key dired-mode-map [f3] 'buffer-menu)                              ;;
 ;;(define-key dired-mode-map "M-o r" 'buffer-menu)
 (define-key dired-mode-map "-" 'dired-up-directory)
@@ -104,9 +105,9 @@
            ;; value of user
            (getenv "USER")))
 
-;; Color Themes ================================================================================ 
+;:q; Color Themes ================================================================================ 
 (load-file "~/.emacs.d/tango-2-steven-theme.el")
-(load-theme "tango-2-steven")
+;;(load-theme "tango-2-steven")
 
 ;; Python Mode ================================================================================ 
 ;;(autoload 'python-mode "python-mode.el" "Python mode." t)
@@ -153,6 +154,7 @@
  
 ;; python ropemacs and pyemacs
 ;;https://github.com/mzc/ropemacs
+(load-file "~/.emacs.d/Pymacs/pymacs.el")
 (require 'pymacs)
 (pymacs-load "ropemacs" "rope-")
 
