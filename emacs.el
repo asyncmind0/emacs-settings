@@ -1,9 +1,10 @@
 ;; Remove splash screen
-(add-to-list 'load-path
-                     "~/.emacs.d/ecb/")
+;;(add-to-list 'load-path
+;;                     "~/.emacs.d/ecb/")
 
 ;;(load-file "/usr/share/emacs/site-lisp/cedet/common/cedet.el")
-(require 'ecb)
+;;(require 'ecb)
+
 (setq stack-trace-on-error t)
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-echo-area-message t)
@@ -68,7 +69,7 @@
 
 ;:q; Color Themes ================================================================================ 
 (load-file "~/.emacs.d/tango-2-steven-theme.el")
-(load-file "~/.emacs.d/color-theme-cool-dark.el")
+;(load-file "~/.emacs.d/color-theme-cool-dark.el")
 ;;(load-theme "tango-2-steven")
 
 ;; Python Mode ================================================================================ 
@@ -107,6 +108,7 @@
  '(compilation-disable-input t)
  '(grep-command "ack --with-filename --nogroup --all")
  '(ack-and-a-half-prompt-for-directory t)
+ '(paredit-mode 0)
  '(recentf-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -124,7 +126,7 @@
 ;; python ropemacs and pyemacs
 ;;https://github.com/mzc/ropemacs
 (require 'xclip)
-(require 'xcscope)
+;;(require 'xcscope)
 (add-to-list 'load-path "~/.emacs.d/")
 (autoload 'ack-and-a-half-same "ack-and-a-half" nil t)
 (autoload 'ack-and-a-half "ack-and-a-half" nil t)
@@ -180,4 +182,13 @@
 (defun my-minibuffer-setup-hook ()
   (local-set-key (kbd "C-w") 'my-minibuffer-insert-word-at-point))
 
-(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
+;;(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
+
+(defun reload-emacs-config ()
+  "reload emacs config"
+  (interactive)
+  (load-file "~/.emacs"))
+
+(defun edit-emacs-config ()
+  (interactive)
+  (find-file "~/.emacs.d/emacs.el"))
