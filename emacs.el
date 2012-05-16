@@ -34,6 +34,7 @@
 (require 'dired+)
 (global-set-key (kbd "M-o s") 'dired)
 (global-set-key (kbd "M-o r") 'buffer-menu)
+(global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 (define-key dired-mode-map [f3] 'buffer-menu)                              ;;
 (define-key dired-mode-map (kbd "-") 'dired-up-directory)
 (toggle-diredp-find-file-reuse-dir 1)
@@ -65,7 +66,7 @@
            ;; value of user
            (getenv "USER")))
 
-;; Color Themes ================================================================================ 
+;:q; Color Themes ================================================================================ 
 (load-file "~/.emacs.d/tango-2-steven-theme.el")
 (load-file "~/.emacs.d/color-theme-cool-dark.el")
 ;;(load-theme "tango-2-steven")
@@ -161,3 +162,22 @@
 (load-file "~/.emacs.d/Pymacs/pymacs.el")
 (require 'pymacs)
 (pymacs-load "ropemacs" "rope-")
+;; code to insert word under point into minibuffer
+;;http://stackoverflow.com/questions/8257009/emacs-insert-word-at-point-into-replace-string-query
+(defun my-minibuffer-insert-word-at-point ()
+  "Get word at point in original buffer and insert it to minibuffer."
+  (interactive)
+  (let (word beg)
+    (with-current-buffer (window-buffer (minibuffer-selected-window))
+      (save-excursion
+        (skip-syntax-backward "w_")
+        (setq beg (point))
+        (skip-syntax-forward "w_")
+        (setq word (buffer-substring-no-properties beg (point)))))
+    (when word
+      (insert word))))
+
+(defun my-minibuffer-setup-hook ()
+  (local-set-key (kbd "C-w") 'my-minibuffer-insert-word-at-point))
+
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
