@@ -16,8 +16,6 @@
 (require 'uniquify)
 (setq uniqueify-buffer-name-style 'reverse)
 
-;; CScope =============================================================================
-(require 'xcscope)
 ;; Evil =============================================================================
 (require 'evil)
 (require 'evil-search)
@@ -32,9 +30,6 @@
 (define-key evil-insert-state-map (kbd "C-w <up>") 'evil-window-up)
 (define-key evil-insert-state-map (kbd "C-w <down>") 'evil-window-down)
 (define-key evil-normal-state-map (kbd "`") 'find-file)
-(define-key evil-normal-state-map (kbd "C-]") 'cscope-find-global-definition-no-prompting)
-(evil-define-key 'normal evil-normal-state-map "C-c d" 'cscope-find-symbol)
-(define-key evil-normal-state-map (kbd "C-t") 'cscope-pop-mark)
 ;;(define-key global-map (kbd "`") 'find-file)
 (evil-define-command "Ve" (function 
                             lambda() (split-window-horizontally)))
@@ -93,7 +88,7 @@
     (local-set-key (kbd "C-c <left>")  'hs-hide-block)
     (local-set-key (kbd "C-c <up>")    'hs-hide-all)
     (local-set-key (kbd "C-c <down>")  'hs-show-all)
-    (local-set-key (kbd "C-]")  'cscope-find-symbol)
+    ;;(local-set-key (kbd "C-]")  'cscope-find-symbol)
     ;;(hs-minor-mode t)
     ;;(hs-hide-all)
     ;;(setq autopair-handle-action-fns
@@ -114,7 +109,6 @@
  ;; If there is more than one, they won't work right.
  '(ack-and-a-half-prompt-for-directory t)
  '(compilation-disable-input t)
- '(cscope-do-not-update-database t)
  '(custom-enabled-themes (quote (tango-2-steven)))
  '(custom-safe-themes (quote ("3800c684fc72cd982e3366a7c92bb4f3975afb9405371c7cfcbeb0bee45ddd18" "7c66e61cada84d119feb99a90d30da44fddc60f386fca041c01de74ebdd934c2" "f41ff26357e8ad4d740901057c0e2caa68b21ecfc639cbc865fdd8a1cb7563a9" "1797bbff3860a9eca27b92017b96a0df151ddf2eb5f73e22e37eb59f0892115e" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
  '(ecb-options-version "2.40")
@@ -234,3 +228,21 @@
 (add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
 (add-hook 'ediff-after-setup-windows-hook 'my-ediff-aswh);
 (add-hook 'ediff-quit-hook 'my-ediff-qh)
+;; CScope =============================================================================
+(require 'xcscope)
+(setq cscope-do-not-update-database t)
+(add-hook 'cscope-list-entry-hook 
+      #'(lambda ()
+            (setq w (get-buffer-window "*cscope*"))
+            (select-window w)
+            (setq h (window-height w))
+            (shrink-window (- h 15))
+            (print "cscope-list-entry-hook")))
+(add-hook 'cscope-minor-mode-hooks
+      #'(lambda ()
+            (define-key evil-normal-state-map (kbd "C-]") 'cscope-find-global-definition-no-prompting)
+            (evil-define-key 'normal evil-normal-state-map "C-c d" 'cscope-find-symbol)
+            (define-key evil-normal-state-map (kbd "C-t") 'cscope-pop-mark)
+            (evil-declare-key 'motion cscope-list-entry-keymap (kbd "<return>") 'cscope-select-entry-other-window)
+            (evil-declare-key 'motion cscope-list-entry-keymap (kbd "RET") 'cscope-select-entry-other-window)
+            (print "cscope-minor-mode-hook Called !!")))
