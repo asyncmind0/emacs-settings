@@ -1,10 +1,4 @@
-;; Remove splash screen
-;;(add-to-list 'load-path
-;;                     "~/.emacs.d/ecb/")
-
-;;(load-file "/usr/share/emacs/site-lisp/cedet/common/cedet.el")
-;;(require 'ecb)
-
+(add-to-list 'load-path "~/.emacs.d/")
 (setq stack-trace-on-error t)
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-echo-area-message t)
@@ -14,6 +8,7 @@
 (package-initialize)
 (require 'xclip)
 (require 'uniquify)
+(require 'buff-menu+)
 (setq uniqueify-buffer-name-style 'reverse)
 
 ;; Evil =============================================================================
@@ -136,7 +131,6 @@
 ;; python ropemacs and pyemacs
 ;;https://github.com/mzc/ropemacs
 
-(add-to-list 'load-path "~/.emacs.d/")
 (autoload 'ack-and-a-half-same "ack-and-a-half" nil t)
 (autoload 'ack-and-a-half "ack-and-a-half" nil t)
 (autoload 'ack-and-a-half-find-file-same "ack-and-a-half" nil t)
@@ -245,4 +239,9 @@
             (define-key evil-normal-state-map (kbd "C-t") 'cscope-pop-mark)
             (evil-declare-key 'motion cscope-list-entry-keymap (kbd "<return>") 'cscope-select-entry-other-window)
             (evil-declare-key 'motion cscope-list-entry-keymap (kbd "RET") 'cscope-select-entry-other-window)
-            (print "cscope-minor-mode-hook Called !!")))
+            ;;(print "cscope-minor-mode-hook Called !!")
+            ))
+(setq-default c-basic-offset 4)
+(setq c-default-style "linux"
+                c-basic-offset 4)
+(setq x-select-enable-clipboard t)
