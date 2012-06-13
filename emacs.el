@@ -261,11 +261,24 @@
 (defun breakpoint-set nil
   (interactive)
   (save-excursion 
+    (next-line)
+    (beginning-of-line)
+    ;;(open-line)
     (insert "sj_debug() ###############################################################\n")
+    (previous-line)
+    (python-indent-line)
     (goto-char (point-min))
+    (flush-lines "^from.*sj_debug$")
     (insert "from debug import shell, debug as sj_debug\n"))
   )
 (define-key global-map [f8] 'breakpoint-set)
+(defun breakpoint-uset nil
+  (interactive)
+  (save-excursion 
+    (goto-char (point-min))
+    (flush-lines ".*sj_debug.*"))
+  )
+(define-key global-map [f7] 'breakpoint-uset)
 ;; kill all other buffers
 (defun kill-other-buffers ()
     "Kill all other buffers."
