@@ -1,12 +1,11 @@
 (deftheme tango-2-steven
-  "Created 2012-05-12.")
+  "Created 2012-05-31.")
 
 (custom-theme-set-faces
  'tango-2-steven
  '(cursor ((t (:foreground "#888888"))))
- '(region ((t (:background "#555753"))))
+ '(region ((t (:background "color-235"))))
  '(highlight ((t (:background "#222222"))))
- ;;'(mode-line ((t (:background "#2e3436" :foreground "#eeeeec"))))
  '(mode-line ((t (:foreground "#FFFFFF" :background "#323232"))))
  '(mode-line-inactive ((t (:background "#111111" :foreground "#cccddd"))))
  '(fringe ((t (:background "#111111"))))

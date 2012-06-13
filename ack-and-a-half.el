@@ -355,7 +355,7 @@ When optional fourth argument is non-nil, treat the from as a regular expression
 (defun ack-and-a-half-list-files (directory &rest arguments)
   (with-temp-buffer
     (let ((default-directory directory))
-      (when (eq 0 (apply 'call-process ack-and-a-half-executable nil t nil "--print0"
+      (when (eq 0 (apply 'call-process ack-and-a-half-executable nil t nil "--with-filename "
                          arguments))
         (goto-char (point-min))
         (let ((beg (point-min))

@@ -105,7 +105,7 @@
  '(ack-and-a-half-prompt-for-directory t)
  '(compilation-disable-input t)
  '(custom-enabled-themes (quote (tango-2-steven)))
- '(custom-safe-themes (quote ("3800c684fc72cd982e3366a7c92bb4f3975afb9405371c7cfcbeb0bee45ddd18" "7c66e61cada84d119feb99a90d30da44fddc60f386fca041c01de74ebdd934c2" "f41ff26357e8ad4d740901057c0e2caa68b21ecfc639cbc865fdd8a1cb7563a9" "1797bbff3860a9eca27b92017b96a0df151ddf2eb5f73e22e37eb59f0892115e" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
+ '(custom-safe-themes (quote ("13b2915043d7e7627e1273d98eb95ebc5b3cc09ef4197afb2e1ede78fe6e0972" "1057947e1144d06a9fc8e97b6a72b72cf533a4cfe1247c4af047dc9221e9b102" "3800c684fc72cd982e3366a7c92bb4f3975afb9405371c7cfcbeb0bee45ddd18" "7c66e61cada84d119feb99a90d30da44fddc60f386fca041c01de74ebdd934c2" "f41ff26357e8ad4d740901057c0e2caa68b21ecfc639cbc865fdd8a1cb7563a9" "1797bbff3860a9eca27b92017b96a0df151ddf2eb5f73e22e37eb59f0892115e" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("/home/steven/iress/xplan/")))
  '(ediff-split-window-function (quote split-window-horizontally))
@@ -231,7 +231,8 @@
             (select-window w)
             (setq h (window-height w))
             (shrink-window (- h 15))
-            (print "cscope-list-entry-hook")))
+            ;;(print "cscope-list-entry-hook")
+            ))
 (add-hook 'cscope-minor-mode-hooks
       #'(lambda ()
             (define-key evil-normal-state-map (kbd "C-]") 'cscope-find-global-definition-no-prompting)
@@ -245,3 +246,47 @@
 (setq c-default-style "linux"
                 c-basic-offset 4)
 (setq x-select-enable-clipboard t)
+;;
+;; String methods
+(defun string/ends-with (s ending)
+      "return non-nil if string S ends with ENDING."
+      (let ((elength (length ending)))
+        (string= (substring s (- 0 elength)) ending)))
+(defun string/starts-with (s arg)
+      "returns non-nil if string S starts with ARG.  Else nil."
+      (cond ((>= (length s) (length arg))
+             (string-equal (substring s 0 (length arg)) arg))
+            (t nil)))
+;; Debug statements ==================================================================
+(defun breakpoint-set nil
+  (interactive)
+  (save-excursion 
+    (insert "sj_debug() ###############################################################\n")
+    (goto-char (point-min))
+    (insert "from debug import shell, debug as sj_debug\n"))
+  )
+(define-key global-map [f8] 'breakpoint-set)
+;; kill all other buffers
+(defun kill-other-buffers ()
+    "Kill all other buffers."
+    (interactive)
+    (mapc 'kill-buffer 
+          (delq (current-buffer) 
+                (remove-if-not 'buffer-file-name (buffer-list)))))
+;; PSVN ================================================================================
+(require 'psvn)
+(setq svn-status-hide-unknown t)
+(setq svn-status-hide-unmodified t)
+;;(add-hook 'svn-status-mode-hook 
+;;          #'(lambda ()
+;;              (evil-mode 0)
+;;              )
+;;          )
+
+;;(defvar svn-log-edit-mode-hook nil "Hook run when entering `svn-log-edit-mode'.")
+;;(defvar svn-log-edit-done-hook nil "Hook run after commiting files via svn.")
+;;            (define-key evil-normal-state-map (kbd "=") 'svn-status-show-svn-diff)
+;;(defun do-svn-prep ()
+;;  (cd '~/iress/xplan')
+;;  (svn-status)
+;;  )
