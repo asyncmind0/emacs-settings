@@ -34,8 +34,7 @@
 
 ;; Dired =============================================================================
 (require 'dired+)
-(global-set-key (kbd "M-o s") 'dired)
-(global-set-key (kbd "M-o r") 'buffer-menu)
+(global-set-key [f4] 'dired)
 (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 (define-key dired-mode-map [f3] 'buffer-menu)                              ;;
 (define-key dired-mode-map (kbd "-") 'dired-up-directory)
@@ -295,7 +294,17 @@
 ;;              (evil-mode 0)
 ;;              )
 ;;          )
-
+;; CTemplate  ==========================================================================
+(require 'mustache-mode)
+;; SCSS =======================================================================
+(setq scss-compile-at-save nil)
+(setq exec-path (cons (expand-file-name "~/.gem/ruby/1.9/bin") exec-path))
+(autoload 'scss-mode "scss-mode")
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+;;(setq auto-mode-alist (cons '("\\.tpl$" . tpl-mode) auto-mode-alist))
+;;   (autoload 'tpl-mode "tpl-mode" "Major mode for editing CTemplate
+;;    files." t)
+;;(add-hook 'tpl-mode-hook '(lambda () (font-lock-mode 1)))
 ;;(defvar svn-log-edit-mode-hook nil "Hook run when entering `svn-log-edit-mode'.")
 ;;(defvar svn-log-edit-done-hook nil "Hook run after commiting files via svn.")
 ;;            (define-key evil-normal-state-map (kbd "=") 'svn-status-show-svn-diff)
