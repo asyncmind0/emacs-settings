@@ -9,6 +9,7 @@
 (require 'xclip)
 (require 'uniquify)
 (require 'buff-menu+)
+(require 'dired+-face-settings)
 (setq uniqueify-buffer-name-style 'reverse)
 
 ;; Evil =============================================================================
@@ -34,9 +35,13 @@
 
 ;; Dired =============================================================================
 (require 'dired+)
-(global-set-key [f4] 'dired)
+(defun start-dired ()
+  (interactive)
+  (dired "."))
+(global-set-key [f4] 'start-dired)
 (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 (define-key dired-mode-map [f3] 'buffer-menu)                              ;;
+(define-key dired-mode-map (kbd "<ret>") 'diredp-find-file-reuse-dir-buffer)
 (define-key dired-mode-map (kbd "-") 'dired-up-directory)
 (toggle-diredp-find-file-reuse-dir 1)
 ;;Recent Files===========================================================================
@@ -119,7 +124,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(diredp-date-time ((((type tty)) :foreground "yellow") (t :foreground "goldenrod1")))
+ '(diredp-dir-heading ((((type tty)) :background "yellow" :foreground "blue") (t :background "Pink" :foreground "DarkOrchid1")))
+ '(diredp-display-msg ((((type tty)) :foreground "blue") (t :foreground "cornflower blue"))))
 ; define function to shutdown emacs server instance
 (defun server-shutdown ()
   "Save buffers, Quit, and Shutdown (kill) server"
@@ -312,3 +319,6 @@
 ;;  (cd '~/iress/xplan')
 ;;  (svn-status)
 ;;  )
+;;(add-to-list 'default-frame-alist '(background-mode . dark))
+
+(toggle-diredp-find-file-reuse-dir 1)
