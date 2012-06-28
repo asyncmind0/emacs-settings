@@ -347,7 +347,12 @@
 
 (defun diff-version (version)
   (interactive "nVersion: \n")
-  (ediff buffer-file-name (replace-regexp-in-string "xplan" (format "%s%s" "xplan" version) buffer-file-name)))
+  ;;(print (format "%s%s" "xplan" (if (equal version 0) "" version))))
+  (ediff buffer-file-name (replace-regexp-in-string "xplan[0-9]*" (format "%s%s" "xplan" (if (equal version 0) "" version)) buffer-file-name)))
+
+(defun switch-version (version)
+  (interactive "nVersion: \n")
+  (find-file (replace-regexp-in-string "xplan[0-9]*" (format "%s%s" "xplan" (if (equal version 0) "" version)) buffer-file-name)))
 
 (require 'multi-web-mode)
 (setq mweb-default-major-mode 'html-mode)
@@ -356,3 +361,5 @@
                   (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
 (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
 (multi-web-global-mode 1)
+
+(global-auto-revert-mode t)
