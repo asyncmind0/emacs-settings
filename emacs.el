@@ -1,3 +1,10 @@
+; define function to shutdown emacs server instance
+(defun server-shutdown ()
+  "Save buffers, Quit, and Shutdown (kill) server"
+  (interactive)
+  (save-some-buffers)
+  (kill-emacs))
+
 (add-to-list 'load-path "~/.emacs.d/")
 (setq stack-trace-on-error t)
 (setq inhibit-splash-screen t)
@@ -33,6 +40,16 @@
   (interactive)
   (split-window-horizontally))
 
+(defun fileinfo ()
+  (interactive)
+  ;;(keyboard-quit)
+  (message nil)
+  (evil-show-file-info))
+
+(global-set-key (kbd "C-g") 'fileinfo)
+(global-set-key (kbd "C-c") 'quit)
+
+
 ;; Dired =============================================================================
 (require 'dired+)
 (defun start-dired ()
@@ -44,6 +61,16 @@
 (define-key dired-mode-map (kbd "<ret>") 'diredp-find-file-reuse-dir-buffer)
 (define-key dired-mode-map (kbd "-") 'dired-up-directory)
 (toggle-diredp-find-file-reuse-dir 1)
+(diredp-toggle-find-file-reuse-dir 1)
+
+;;(add-hook 'dired-mode-hook
+;;          '(lambda ()
+;;            (print "dired-mode-hook Called !!")
+;;            (toggle-diredp-find-file-reuse-dir 1)
+;;            (diredp-toggle-find-file-reuse-dir 1)
+;;            ;;(define-key evil-normal-state-map (kbd "-") 'dired-up-directory)
+;;            ;;(evil-mode 0)
+;;            ))
 ;;Recent Files===========================================================================
 (require 'recentf)
 (recentf-mode 1)
@@ -113,6 +140,7 @@
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("/home/steven/iress/xplan/")))
  '(ediff-split-window-function (quote split-window-horizontally))
+ '(evil-search-module (quote evil-search))
  '(grep-command "ack --with-filename --nogroup --all")
  '(lazy-highlight-cleanup nil)
  '(lazy-highlight-initial-delay 0)
@@ -127,12 +155,6 @@
  '(diredp-date-time ((((type tty)) :foreground "yellow") (t :foreground "goldenrod1")))
  '(diredp-dir-heading ((((type tty)) :background "yellow" :foreground "blue") (t :background "Pink" :foreground "DarkOrchid1")))
  '(diredp-display-msg ((((type tty)) :foreground "blue") (t :foreground "cornflower blue"))))
-; define function to shutdown emacs server instance
-(defun server-shutdown ()
-  "Save buffers, Quit, and Shutdown (kill) server"
-  (interactive)
-  (save-some-buffers)
-  (kill-emacs))
  
 ;; python ropemacs and pyemacs
 ;;https://github.com/mzc/ropemacs
@@ -322,6 +344,16 @@
 ;;(add-to-list 'default-frame-alist '(background-mode . dark))
 
 (toggle-diredp-find-file-reuse-dir 1)
+
+(defun diff-version (version)
+  (interactive "nVersion: \n")
+  ;;(print (format "%s%s" "xplan" (if (equal version 0) "" version))))
+  (ediff buffer-file-name (replace-regexp-in-string "xplan[0-9]*" (format "%s%s" "xplan" (if (equal version 0) "" version)) buffer-file-name)))
+
+(defun switch-version (version)
+  (interactive "nVersion: \n")
+  (find-file (replace-regexp-in-string "xplan[0-9]*" (format "%s%s" "xplan" (if (equal version 0) "" version)) buffer-file-name)))
+
 (require 'multi-web-mode)
 (setq mweb-default-major-mode 'html-mode)
 (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
@@ -329,3 +361,5 @@
                   (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
 (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
 (multi-web-global-mode 1)
+
+(global-auto-revert-mode t)
