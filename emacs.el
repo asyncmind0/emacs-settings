@@ -17,7 +17,19 @@
 (require 'uniquify)
 (require 'buff-menu+)
 (require 'dired+-face-settings)
+(require 'column-marker)
+(require 'repository-root)
+(require 'grep-o-matic)
+;;(require 'fix-buffers-list)
+;;(setq list-buffers-compact nil)
+;;(setq list-buffers-modified-face 'bold)
+
 (setq uniqueify-buffer-name-style 'reverse)
+(autoload 'muttrc-mode "muttrc-mode.el"
+  "Major mode to edit muttrc files" t)
+(setq auto-mode-alist
+      (append '(("muttrc\\'" . muttrc-mode))
+              auto-mode-alist))
 
 ;; Evil =============================================================================
 (require 'evil)
@@ -121,6 +133,20 @@
       ;;(list #'autopair-default-handle-action
         ;;  #'autopair-python-triple-quote-action
     ))
+(add-hook 'find-file-hook 'flymake-find-file-hook)
+(when (load "flymake" t)
+  (defun flymake-pyflakes-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "pycheckers"  (list local-file))))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-pyflakes-init)))
+(load-library "flymake-cursor")
+;;(global-set-key [f10] 'flymake-goto-prev-error)
+;;(global-set-key [f11] 'flymake-goto-next-error)
 ;;======= Code folding =======
 (defun jao-toggle-selective-display ()
   (interactive)
@@ -133,6 +159,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(Buffer-menu-use-frame-buffer-list "Mode")
  '(ack-and-a-half-prompt-for-directory t)
  '(compilation-disable-input t)
  '(custom-enabled-themes (quote (tango-2-steven)))
@@ -146,7 +173,8 @@
  '(lazy-highlight-initial-delay 0)
  '(lazy-highlight-max-at-a-time nil)
  '(paredit-mode nil t)
- '(recentf-mode t))
+ '(recentf-mode t)
+ '(repository-root-matchers (quote (repository-root-matcher/git repository-root-matcher/svn))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -154,7 +182,9 @@
  ;; If there is more than one, they won't work right.
  '(diredp-date-time ((((type tty)) :foreground "yellow") (t :foreground "goldenrod1")))
  '(diredp-dir-heading ((((type tty)) :background "yellow" :foreground "blue") (t :background "Pink" :foreground "DarkOrchid1")))
- '(diredp-display-msg ((((type tty)) :foreground "blue") (t :foreground "cornflower blue"))))
+ '(diredp-display-msg ((((type tty)) :foreground "blue") (t :foreground "cornflower blue")))
+ '(flymake-errline ((t (:background "color-53"))))
+ '(flymake-warnline ((t (:background "color-58")))))
  
 ;; python ropemacs and pyemacs
 ;;https://github.com/mzc/ropemacs
@@ -352,7 +382,7 @@
 
 (defun switch-version (version)
   (interactive "nVersion: \n")
-  (find-file (replace-regexp-in-string "xplan[0-9]*" (format "%s%s" "xplan" (if (equal version 0) "" version)) buffer-file-name)))
+  (goto-line  (line-number-at-pos) (find-file (replace-regexp-in-string "xplan[0-9]*" (format "%s%s" "xplan" (if (equal version 0) "" version)) buffer-file-name))))
 
 (require 'multi-web-mode)
 (setq mweb-default-major-mode 'html-mode)
@@ -363,3 +393,30 @@
 (multi-web-global-mode 1)
 
 (global-auto-revert-mode t)
+(add-to-list 'load-path "~/.emacs.d/jslint-v8")
+(require 'flymake-jslint)
+(add-hook 'javascript-mode-hook
+                    (lambda () (flymake-mode t)))
+(setq jslint-v8-shell "/usr/bin/d8")
+
+(require 'project-buffer-mode)
+(require 'fsproject)
+
+;;http://stackoverflow.com/questions/8257009/emacs-insert-word-at-point-into-replace-string-query
+(defun my-minibuffer-insert-word-at-point ()
+  "Get word at point in original buffer and insert it to minibuffer."
+  (interactive)
+  (let (word beg)
+    (with-current-buffer (window-buffer (minibuffer-selected-window))
+      (save-excursion
+        (skip-syntax-backward "w_")
+        (setq beg (point))
+        (skip-syntax-forward "w_")
+        (setq word (buffer-substring-no-properties beg (point)))))
+    (when word
+      (insert word))))
+
+(defun my-minibuffer-setup-hook ()
+  (local-set-key (kbd "C-w") 'my-minibuffer-insert-word-at-point))
+
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
