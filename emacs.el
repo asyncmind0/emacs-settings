@@ -12,7 +12,11 @@
 (setq inhibit-startup-message t)
 (setq paredit-mode 0)
 (require 'package)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
+
 (require 'xclip)
 (require 'uniquify)
 (require 'buff-menu+)
@@ -164,6 +168,7 @@
  '(compilation-disable-input t)
  '(custom-enabled-themes (quote (tango-2-steven)))
  '(custom-safe-themes (quote ("13b2915043d7e7627e1273d98eb95ebc5b3cc09ef4197afb2e1ede78fe6e0972" "1057947e1144d06a9fc8e97b6a72b72cf533a4cfe1247c4af047dc9221e9b102" "3800c684fc72cd982e3366a7c92bb4f3975afb9405371c7cfcbeb0bee45ddd18" "7c66e61cada84d119feb99a90d30da44fddc60f386fca041c01de74ebdd934c2" "f41ff26357e8ad4d740901057c0e2caa68b21ecfc639cbc865fdd8a1cb7563a9" "1797bbff3860a9eca27b92017b96a0df151ddf2eb5f73e22e37eb59f0892115e" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
+ '(display-buffer-reuse-frames t)
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("/home/steven/iress/xplan/")))
  '(ediff-split-window-function (quote split-window-horizontally))
@@ -174,7 +179,11 @@
  '(lazy-highlight-max-at-a-time nil)
  '(paredit-mode nil t)
  '(recentf-mode t)
- '(repository-root-matchers (quote (repository-root-matcher/git repository-root-matcher/svn))))
+ '(repository-root-matchers (quote (repository-root-matcher/git repository-root-matcher/svn)))
+ '(same-window-regexps (quote (".*Buffer Menu.*")))
+ '(split-width-threshold 95)
+ '(split-window-keep-point nil)
+ '(window-min-width 90))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -186,8 +195,6 @@
  '(flymake-errline ((t (:background "color-53"))))
  '(flymake-warnline ((t (:background "color-58")))))
  
-;; python ropemacs and pyemacs
-;;https://github.com/mzc/ropemacs
 
 (autoload 'ack-and-a-half-same "ack-and-a-half" nil t)
 (autoload 'ack-and-a-half "ack-and-a-half" nil t)
@@ -199,7 +206,6 @@
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 ;;grep window
-(setq split-width-threshold nil)
 (defun my-grep ()
   "Run grep and resize the grep window"
   (interactive)
@@ -222,9 +228,10 @@
 (add-hook 'grep-mode-hook 'my-grep-hook)
 (global-set-key [f6] 'my-grep)
 
-(load-file "~/.emacs.d/Pymacs/pymacs.el")
+;; python ropemacs and pyemacs
+;;https://github.com/mzc/ropemacs
 (require 'pymacs)
-(pymacs-load "ropemacs" "rope-")
+;(pymacs-load "ropemacs" "rope-")
 ;; code to insert word under point into minibuffer
 ;;http://stackoverflow.com/questions/8257009/emacs-insert-word-at-point-into-replace-string-query
 (defun my-minibuffer-insert-word-at-point ()
@@ -355,6 +362,7 @@
 ;;          )
 ;; CTemplate  ==========================================================================
 (require 'mustache-mode)
+(require 'jinja)
 ;; SCSS =======================================================================
 (setq scss-compile-at-save nil)
 (setq exec-path (cons (expand-file-name "~/.gem/ruby/1.9/bin") exec-path))
